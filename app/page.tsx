@@ -1,22 +1,45 @@
-'use client'
-import { increment } from '@/store/features/testSlice';
-import { useAppDispatch, useTypedSelector } from '@/store/hooks';
-import { Button } from '@/ui/button';
+import { MainLayout } from '@/components/main-layout/main-layout';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { useData } from '@/hooks/use-data';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function Home() {
-  const dispatch = useAppDispatch()
-  const value = useTypedSelector((state) => state.test.value)
+  const data = useData()
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-2xl font-semibold leading-10 tracking-tight text-gray-600 dark:text-zinc-50">
-            SLAM ENGLISH {value}
+      <MainLayout>
+        <div className="w-full h-full flex flex-col gap-6 items-start text-left">
+          <h1 className="text-2xl font-semibold leading-10 tracking-tight text-foreground">
+            Slam English
           </h1>
-          <Button onClick={() => dispatch(increment())}>click</Button>
+          <Link href='/letter/all'>
+            <div className="
+          hover:border-l-0 hover:border-b-0 hover:border-t-2 hover:border-r border-l border-b-2 bg-background flex justify-center
+           px-6 py-6 rounded-md
+           text-2xl sm:text-3xl font-bold text-foreground">
+              All
+            </div>
+          </Link>
+          <Separator />
+          <div className='w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 sm:gap-8'>
+            {data.allData.map((item) => (
+              <Link key={item.letter} href={`/letter/${item.letter}`}>
+                <div className="relative hover:border-l-0 hover:border-b-0 hover:border-t-2 hover:border-r border-l border-b-2 bg-background flex justify-center px-4 py-6 rounded-md">
+                  <div className="text-3xl sm:text-4xl font-bold uppercase text-foreground mr-2">{item.letter}</div>
+                  <Badge className={
+                    cn(
+                      "absolute -top-2 -right-2",
+                      item.count > 0 ? "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300" : "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300"
+                    )}>
+                    <div className="text-sm font-medium">{item.count}</div>
+                  </Badge>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </MainLayout>
   );
 }

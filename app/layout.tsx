@@ -1,6 +1,7 @@
-import Providers from './providers';
+import Providers from '../providers/providers';
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { NavSettings } from '@/components/nav-settings/nav-settings';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -14,9 +15,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${inter.className} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col"><Providers>{children}</Providers></body>
+      <body className="h-full flex flex-col">
+        <Providers>
+          {children}
+          <NavSettings />
+        </Providers>
+      </body>
     </html>
   );
 }
