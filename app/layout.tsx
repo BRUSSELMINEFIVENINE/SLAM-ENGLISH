@@ -7,6 +7,11 @@ const inter = Inter({
   subsets: ['latin'],
 })
 
+export const metadata = {
+  title: 'SLAM ENGLISH',
+  description: 'Learn English words',
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{

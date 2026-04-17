@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import {testSlice} from './features/testSlice'
+import { settingsSlice } from './features/settingsSlice'
 
 export const store = configureStore({
   reducer: {
-    test: testSlice.reducer,
+    settings: settingsSlice.reducer,
   },
 })
 

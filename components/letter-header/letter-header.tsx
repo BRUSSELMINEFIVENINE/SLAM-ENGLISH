@@ -12,10 +12,7 @@ export function LetterHeader({ letter = 'all' }: { letter?: string }) {
       <Button className='w-12' onClick={() => router.back()}>
         <ChevronLeft className="justify-self-start" />
       </Button>
-        <div className="text-center font-medium text-xl">
-          Letter: <span className="uppercase">{letter}</span>
-        </div>
-      <div />
+      <span className="text-center uppercase font-medium text-2xl">{letter}</span>
     </div>
   )
 }

@@ -1,12 +1,12 @@
 import { MainLayout } from '@/components/main-layout/main-layout';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { useData } from '@/hooks/use-data';
+import { useAllData } from '@/hooks/use-all-data';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 export default function Home() {
-  const data = useData()
+  const data = useAllData()
 
   return (
       <MainLayout>
