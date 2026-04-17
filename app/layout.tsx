@@ -1,4 +1,6 @@
 import Providers from '../providers/providers';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { NavSettings } from '@/components/nav-settings/nav-settings';
@@ -27,6 +29,8 @@ export default function RootLayout({
         <Providers>
           {children}
           <NavSettings />
+          <Analytics />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
