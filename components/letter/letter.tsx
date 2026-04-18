@@ -9,18 +9,23 @@ import Link from 'next/link'
 import { Progress } from '../ui/progress'
 import { useQueryParams } from '@/helpers/update-query-params'
 import { useGetWordByLetterQuery } from '@/lib/redux/api/words/words.api'
+import { Loader } from '../loader/loader'
 
 export function Letter({ letter }: { letter: string }) {
   const { get } = useQueryParams()
 
   const shuffle = get('shuffle') === 'true'
 
-  const { data = [] } = useGetWordByLetterQuery({ letter, shuffle })
+  const { data = [], isLoading } = useGetWordByLetterQuery({ letter, shuffle })
 
   const { nextWord, prevWord, currentWord, currentIdx } = useWordStepByStep(data)
 
   const total = data.length
   const progress = ((currentIdx - 1) / total) * 100
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   if (!data.length) {
     return (
