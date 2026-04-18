@@ -3,7 +3,8 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { NavSettings } from '@/components/nav-settings/nav-settings';
+import { Footer } from '@/components/footer/footer';
+import { MainLayout } from '@/components/main-layout/main-layout';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -27,8 +28,10 @@ export default function RootLayout({
     >
       <body className="h-full flex flex-col">
         <Providers>
-          {children}
-          <NavSettings />
+          <MainLayout>
+            {children}
+            <Footer />
+          </MainLayout>
           <Analytics />
           <SpeedInsights />
         </Providers>

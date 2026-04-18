@@ -9,9 +9,14 @@ export const useWordStepByStep = (words: { word: string; value: string }[]) => {
     setCurrentIdx((prev) => (prev + 1) % words.length)
   }
 
+  function prev() {
+    setCurrentIdx((prev) => (prev - 1) % words.length)
+  }
+
   return {
     currentWord,
     currentIdx: currentIdx + 1,
     nextWord: next,
+    prevWord: prev,
   }
 }
