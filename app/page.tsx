@@ -2,7 +2,7 @@ import { NavSettings } from '@/components/nav-settings/nav-settings';
 import { ScrambleText } from '@/components/scramble-text/scramble-text';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { getSummary } from '@/lib/get-summary';
+import { getSummary } from '@/helpers/get-summary';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 

@@ -7,14 +7,13 @@ import { Button } from '@/components/ui/button'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 import Link from 'next/link'
 import { Progress } from '../ui/progress'
-import { useQueryParams } from '@/helpers/update-query-params'
 import { useGetWordByLetterQuery } from '@/lib/redux/api/words/words.api'
 import { Loader } from '../loader/loader'
+import { useTypedSelector } from '@/lib/redux/hooks'
+import { cn } from '@/lib/utils'
 
 export function Letter({ letter }: { letter: string }) {
-  const { get } = useQueryParams()
-
-  const shuffle = get('shuffle') === 'true'
+  const { learnMode, shuffle } = useTypedSelector(data => data.settings)
 
   const { data = [], isLoading } = useGetWordByLetterQuery({ letter, shuffle })
 
@@ -52,22 +51,34 @@ export function Letter({ letter }: { letter: string }) {
   }
 
   return (
-    <div className='w-full flex-1 flex gap-18 flex-col justify-center items-center'>
-      <div className="flex h-36 items-end justify-center w-full">
-        <Popover>
-          <PopoverTrigger asChild>
-            <div className="cursor-pointer text-center break-all text-[clamp(2rem,8vw,7rem)] font-bold">
+    <div className={cn('w-full flex-1 flex flex-col justify-center items-center', learnMode ? 'gap-12' : 'gap-18')}>
+      <div className={cn("flex items-end justify-center w-full", !learnMode && 'h-36')}>
+        {learnMode ? (
+          <div className='w-full flex flex-col gap-4 items-center'>
+            <div className="text-center break-all text-[clamp(2rem,8vw,7rem)] font-extrabold">
               {currentWord.word}
             </div>
-          </PopoverTrigger>
-          <PopoverContent side='top' className='text-center'>
-            {currentWord.value}
-          </PopoverContent>
-        </Popover>
+            <div className="py-2 px-4 bg-muted-foreground/10 rounded-xl text-center break-normal text-[clamp(0.5rem,6vw,1rem)] font-medium">
+              {currentWord.value}
+            </div>
+          </div>
+        ) : (
+          <Popover>
+            <PopoverTrigger asChild>
+              <div className="cursor-pointer text-center break-all text-[clamp(2rem,8vw,7rem)] font-extrabold">
+                {currentWord.word}
+              </div>
+            </PopoverTrigger>
+            <PopoverContent side='top' className='text-center'>
+              {currentWord.value}
+            </PopoverContent>
+          </Popover>
+        )}
+
       </div>
 
       <div className='flex flex-col justify-center items-center w-full gap-6'>
-        <div className='flex gap-3'>
+        <div className='flex gap-4'>
           <Button
             disabled={currentIdx <= 1}
             size='lg'
