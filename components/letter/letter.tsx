@@ -24,7 +24,7 @@ export function Letter({ letter }: { letter: string }) {
   const progress = ((currentIdx - 1) / total) * 100
 
   if (isLoading) {
-    return <Loader />
+    return <Loader animateStyle='animate-spin-reverse' />
   }
 
   if (!data.length) {
