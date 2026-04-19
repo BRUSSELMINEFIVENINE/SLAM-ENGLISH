@@ -82,7 +82,7 @@ export function Letter({ letter }: { letter: string }) {
             Next
           </Button>
         </div>
-        <div className='flex w-full flex-col items-center gap-4'>
+        <div className='flex w-full flex-col items-center gap-4 mb-8'>
           <Progress value={progress} className="w-[40%] transition-all duration-300" />
           <span className='font-semibold'>{currentIdx} / {data.length}</span>
         </div>
