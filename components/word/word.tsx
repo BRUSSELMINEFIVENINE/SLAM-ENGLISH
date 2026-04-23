@@ -12,7 +12,7 @@ import { Loader } from '../loader/loader'
 import { useTypedSelector } from '@/lib/redux/hooks'
 import { cn } from '@/lib/utils'
 
-export function Letter({ letter }: { letter: string }) {
+export function Word({ letter }: { letter: string }) {
   const { learnMode, shuffle } = useTypedSelector(data => data.settings)
 
   const { data = [], isLoading } = useGetWordByLetterQuery({ letter, shuffle })

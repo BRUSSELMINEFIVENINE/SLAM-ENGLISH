@@ -1,4 +1,4 @@
-import { Letter } from '@/components/letter/letter';
+import { Word } from '@/components/word/word';
 
 export const metadata = {
   title: 'All | SLAM ENGLISH',
@@ -7,6 +7,6 @@ export const metadata = {
 
 export default function All() {
   return (
-    <Letter letter='all' />
+    <Word letter='all' />
   )
 }
