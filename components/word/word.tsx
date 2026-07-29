@@ -2,52 +2,51 @@
 
 import { useWordStepByStep } from '@/helpers/get-word-step-by-step'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { PackageX, Undo2 } from 'lucide-react'
+import { RefreshCcw, SkipBack, SkipForward } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import Link from 'next/link'
 import { Progress } from '../ui/progress'
-import { useGetWordByLetterQuery } from '@/lib/redux/api/words/words.api'
+import { useGetWordsQuery } from '@/lib/redux/api/words/words.api'
 import { Loader } from '../loader/loader'
 import { useTypedSelector } from '@/lib/redux/hooks'
 import { cn } from '@/lib/utils'
+import { useRef, useState } from 'react'
+import { usePressKey } from '@/hooks/use-press-key'
+import { NoWords } from '../no-words/no-words'
 
-export function Word({ letter }: { letter: string }) {
+export function Word({ letter }: { letter?: string }) {
+  const nextRef = useRef<HTMLButtonElement>(null)
+  const prevRef = useRef<HTMLButtonElement>(null)
+
   const { learnMode, shuffle } = useTypedSelector(data => data.settings)
 
-  const { data = [], isLoading } = useGetWordByLetterQuery({ letter, shuffle })
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const { nextWord, prevWord, currentWord, currentIdx } = useWordStepByStep(data)
+  const { data = { items: [], total: 0, limit: 0, page: 1 }, isLoading } = useGetWordsQuery({ letter, shuffle, page: currentPage })
 
-  const total = data.length
-  const progress = ((currentIdx - 1) / total) * 100
+  const { nextWord, prevWord, reset, currentWord, commonIdx } = useWordStepByStep(
+    data.items,
+    data.total,
+    data.limit,
+    currentPage,
+    setCurrentPage,
+  )
+
+  usePressKey('ArrowRight', () => {
+    nextRef.current?.click()
+  })
+
+  usePressKey('ArrowLeft', () => {
+    prevRef.current?.click()
+  })
+
+  const progress = (commonIdx / data.total) * 100
 
   if (isLoading) {
     return <Loader animateStyle='animate-spin-reverse' />
   }
 
-  if (!data.length) {
-    return (
-      <Empty className="h-full mt-4 mb-8 bg-muted/30">
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <PackageX />
-          </EmptyMedia>
-          <EmptyTitle>No Words</EmptyTitle>
-          <EmptyDescription className="max-w-xs text-pretty">
-            Coming soon...
-          </EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          <Link href='/'>
-            <Button variant="outline">
-              <Undo2 />
-              Back
-            </Button>
-          </Link>
-        </EmptyContent>
-      </Empty>
-    )
+  if (!data.items.length) {
+    return <NoWords />
   }
 
   return (
@@ -59,7 +58,7 @@ export function Word({ letter }: { letter: string }) {
               {currentWord.word}
             </div>
             <div className="py-2 px-4 bg-muted-foreground/10 rounded-xl text-center break-normal text-[clamp(0.5rem,6vw,1rem)] font-medium">
-              {currentWord.value}
+              {currentWord.translation}
             </div>
           </div>
         ) : (
@@ -70,7 +69,7 @@ export function Word({ letter }: { letter: string }) {
               </div>
             </PopoverTrigger>
             <PopoverContent side='top' className='text-center'>
-              {currentWord.value}
+              {currentWord.translation}
             </PopoverContent>
           </Popover>
         )}
@@ -80,22 +79,24 @@ export function Word({ letter }: { letter: string }) {
       <div className='flex flex-col justify-center items-center w-full gap-6'>
         <div className='flex gap-4'>
           <Button
-            disabled={currentIdx <= 1}
+            ref={prevRef}
+            disabled={commonIdx <= 1}
             size='lg'
             className='w-20'
             onClick={prevWord}>
-            Prev
+            <SkipBack /> Prev
           </Button>
           <Button
+            ref={nextRef}
             size='lg'
             className='w-20'
-            onClick={nextWord}>
-            Next
+            onClick={commonIdx === data.total ? reset : nextWord}>
+            {commonIdx === data.total ? <RefreshCcw /> : <>Next <SkipForward /></>}
           </Button>
         </div>
         <div className='flex w-full flex-col items-center gap-4 mb-8'>
           <Progress value={progress} className="w-[40%] transition-all duration-300" />
-          <span className='font-semibold'>{currentIdx} / {data.length}</span>
+          <span className='font-semibold'>{commonIdx} / {data.total}</span>
         </div>
       </div>
     </div>

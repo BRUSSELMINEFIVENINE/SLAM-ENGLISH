@@ -1,22 +1,49 @@
-import { useState } from 'react';
+import { WordResponse } from '@/lib/redux/api/words';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-export const useWordStepByStep = (words: { word: string; value: string }[]) => { 
- const [currentIdx, setCurrentIdx] = useState(0)
+export const useWordStepByStep = (words: WordResponse[], total: number, limit: number, page: number, setCurrentPage: Dispatch<SetStateAction<number>>) => { 
+  const [currentIdx, setCurrentIdx] = useState(0)
+  const [commonIdx, setCommonIdx] = useState(0)
 
   const currentWord = words[currentIdx]
 
-  function next() {
-    setCurrentIdx((prev) => (prev + 1) % words.length)
+  function nextWord() {
+    const isLastWordOnPage = currentIdx === limit - 1
+
+    if (isLastWordOnPage) {
+      setCurrentIdx(0)
+      setCurrentPage((p) => p + 1)
+    } else {
+      setCurrentIdx((prev) => prev + 1)
+    }
+
+    setCommonIdx((prev) => (prev + 1) % total)
   }
 
-  function prev() {
-    setCurrentIdx((prev) => (prev - 1) % words.length)
+  function prevWord() {
+    const isFirstWordOnPage = currentIdx === 0
+
+    if (isFirstWordOnPage) {
+      setCurrentPage((p) => Math.max(p - 1, 1))
+      setCurrentIdx(limit - 1)
+    } else {
+      setCurrentIdx((prev) => prev - 1)
+    }
+
+    setCommonIdx((prev) => (prev - 1) % total)
+  }
+
+  function reset() {
+    setCurrentPage(1)
+    setCurrentIdx(0)
+    setCommonIdx(0)
   }
 
   return {
     currentWord,
-    currentIdx: currentIdx + 1,
-    nextWord: next,
-    prevWord: prev,
+    commonIdx: commonIdx + 1,
+    nextWord,
+    prevWord,
+    reset,
   }
 }

@@ -1,4 +1,4 @@
-import { Word } from '@/components/word/word';
+import { WrapperWords } from '@/components/wrapper-words/wrapper-words';
 
 export const metadata = {
   title: 'All | SLAM ENGLISH',
@@ -7,6 +7,6 @@ export const metadata = {
 
 export default function All() {
   return (
-    <Word letter='all' />
+    <WrapperWords />
   )
 }

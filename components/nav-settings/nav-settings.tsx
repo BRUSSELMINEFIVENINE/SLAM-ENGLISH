@@ -1,16 +1,16 @@
 'use client'
 
-import { Cog, GraduationCap, Shuffle } from 'lucide-react';
+import { Cog, GraduationCap, LayoutGrid, Shuffle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { ModeToggle } from '@/components/ui/mode-toggle';
 import { useAppDispatch, useTypedSelector } from '@/lib/redux/hooks';
-import { toggleLearnMode, toggleShuffle } from '@/lib/redux/features/settingsSlice';
+import { toggleLayout, toggleLearnMode, toggleShuffle } from '@/lib/redux/features/settingsSlice';
 
 export function NavSettings() {
   const dispatch = useAppDispatch()
 
-  const { learnMode, shuffle } = useTypedSelector(data => data.settings)
+  const { learnMode, shuffle, layout } = useTypedSelector(data => data.settings)
 
   return (
     <Drawer>
@@ -49,6 +49,17 @@ export function NavSettings() {
                 onClick={() => dispatch(toggleShuffle())}
               >
                 <Shuffle className="h-[1.2rem] w-[1.2rem]" />
+              </Button>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className='mr-2 text-lg font-medium'>Layout:</div>
+              <Button
+                size="icon"
+                variant={layout !== 'single' ? "default" : "outline"}
+                onClick={() => dispatch(toggleLayout())}
+              >
+                <LayoutGrid className="h-[1.2rem] w-[1.2rem]" />
               </Button>
             </div>
           </div>

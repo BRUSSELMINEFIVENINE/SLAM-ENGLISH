@@ -1,4 +1,4 @@
-import { Word } from '@/components/word/word'
+import { WrapperWords } from '@/components/wrapper-words/wrapper-words'
 
 export async function generateMetadata({
   params,
@@ -16,6 +16,6 @@ export default async function LetterPage({ params }: { params: Promise<{ letter:
   const { letter } = await params
 
   return (
-    <Word letter={letter} />
+    <WrapperWords letter={letter} />
   )
 }
