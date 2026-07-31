@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export function NoWords() {
   return (
-    <Empty className="h-full mt-4 mb-8 bg-muted/30">
+    <Empty className="h-full mt-6 mb-6 bg-muted/30">
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <PackageX />
