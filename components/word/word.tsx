@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { useRef, useState } from 'react'
 import { usePressKey } from '@/hooks/use-press-key'
 import { NoWords } from '../no-words/no-words'
+import { Skeleton } from '../ui/skeleton'
 
 export function Word({ letter }: { letter?: string }) {
   const nextRef = useRef<HTMLButtonElement>(null)
@@ -21,7 +22,7 @@ export function Word({ letter }: { letter?: string }) {
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  const { data = { items: [], total: 0, limit: 0, page: 1 }, isLoading } = useGetWordsQuery({ letter, shuffle, page: currentPage })
+  const { data = { items: [], total: 0, limit: 0, page: 1 }, isLoading, isFetching } = useGetWordsQuery({ letter, shuffle, page: currentPage })
 
   const { nextWord, prevWord, reset, currentWord, commonIdx } = useWordStepByStep(
     data.items,
@@ -52,28 +53,28 @@ export function Word({ letter }: { letter?: string }) {
   return (
     <div className={cn('w-full flex-1 flex flex-col justify-center items-center', learnMode ? 'gap-12' : 'gap-18')}>
       <div className={cn("flex items-end justify-center w-full", !learnMode && 'h-36')}>
-        {learnMode ? (
-          <div className='w-full flex flex-col gap-4 items-center'>
-            <div className="text-center break-all text-[clamp(2rem,8vw,7rem)] font-extrabold">
-              {currentWord.word}
-            </div>
-            <div className="py-2 px-4 bg-muted-foreground/10 rounded-xl text-center break-normal text-[clamp(0.5rem,6vw,1rem)] font-medium">
-              {currentWord.translation}
-            </div>
-          </div>
-        ) : (
-          <Popover>
-            <PopoverTrigger asChild>
-              <div className="cursor-pointer text-center break-all text-[clamp(2rem,8vw,7rem)] font-extrabold">
+        {isFetching ? <Skeleton className="h-[clamp(2rem,8vw,7rem)] w-62.5" /> :
+          learnMode ? (
+            <div className='w-full flex flex-col gap-4 items-center'>
+              <div className="text-center break-all text-[clamp(2rem,8vw,7rem)] font-extrabold">
                 {currentWord.word}
               </div>
-            </PopoverTrigger>
-            <PopoverContent side='top' className='text-center'>
-              {currentWord.translation}
-            </PopoverContent>
-          </Popover>
-        )}
-
+              <div className="py-2 px-4 bg-muted-foreground/10 rounded-xl text-center break-normal text-[clamp(0.5rem,6vw,1rem)] font-medium">
+                {currentWord.translation}
+              </div>
+            </div>
+          ) : (
+            <Popover>
+              <PopoverTrigger asChild>
+                <div className="cursor-pointer text-center break-all text-[clamp(2rem,8vw,7rem)] font-extrabold">
+                  {currentWord.word}
+                </div>
+              </PopoverTrigger>
+              <PopoverContent side='top' className='text-center'>
+                {currentWord.translation}
+              </PopoverContent>
+            </Popover>
+          )}
       </div>
 
       <div className='flex flex-col justify-center items-center w-full gap-6'>

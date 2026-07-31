@@ -57,9 +57,9 @@ export function RotatingText({
           ...style,
           transform: visible
             ? "translateY(0)"
-            : `translateY(-${y}px)`,
-          transition: `transform ${animationDuration}ms ease-out, opacity ${animationDuration}ms ease-out`,
-          willChange: "transform, opacity",
+            : `translateY(${y}px)`,
+          transition: `transform ${animationDuration}ms ease-out`,
+          willChange: "transform",
         }}
       >
         {items[index]}
