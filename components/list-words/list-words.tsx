@@ -2,7 +2,7 @@
 
 import { useGetWordsQuery } from '@/lib/redux/api/words'
 import { useTypedSelector } from '@/lib/redux/hooks'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { NoWords } from '@/components/no-words/no-words'
 import { Loader } from '@/components/loader/loader'
 import { Separator } from '@/components/ui/separator'
@@ -11,8 +11,6 @@ import { Pagination } from '../pagination/pagination'
 import { useIsMobile } from '@/hooks/use-is-mobile'
 
 export function ListWords({ letter }: { letter?: string }) {
-  const containerRef = useRef<HTMLDivElement | null>(null)
- 
   const isMobile = useIsMobile(1024)
 
   const { learnMode, shuffle } = useTypedSelector(data => data.settings)
@@ -60,7 +58,7 @@ export function ListWords({ letter }: { letter?: string }) {
   }
 
   return (
-    <div ref={containerRef} className='w-full flex-1 flex flex-col justify-center items-center mt-12'>
+    <div className='w-full flex-1 flex flex-col justify-center items-center mt-12'>
       <div className={cn('w-full min-h-[calc(100%-80px)] h-[calc(100vh-300px)] overflow-y-auto bg-muted/30 p-4 rounded-xl grid gap-y-8 gap-x-12', !isFetching && 'grid-cols-1 lg:grid-cols-2' )}>
         {isFetching ? <Loader animateStyle='animate-spin-reverse' /> : data.items.map(({ word, id, translation }, idx) => (
           <div key={id} className='flex flex-col gap-y-4'>
