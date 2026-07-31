@@ -32,7 +32,7 @@ export default function Home() {
           {data.map((item) => (
             <Link key={item.letter} href={`/letter/${item.letter}`}>
               <div className="relative hover:border-l-0 hover:border-b-0 hover:border-t-2 hover:border-r border-l border-b-2 bg-background flex justify-center px-4 py-6 rounded-md">
-                <div className="text-3xl sm:text-4xl font-bold uppercase text-foreground mr-2">{item.letter}</div>
+                <div className="text-3xl sm:text-4xl font-bold uppercase text-foreground">{item.letter}</div>
                 <Badge className={
                   cn(
                     "absolute -top-2 -right-2",
