@@ -21,5 +21,4 @@ export const wordsApi = api.injectEndpoints({
 
 export const {
   useGetWordsQuery,
-  useLazyGetWordsQuery,
 } = wordsApi

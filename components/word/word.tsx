@@ -13,16 +13,19 @@ import { useRef, useState } from 'react'
 import { usePressKey } from '@/hooks/use-press-key'
 import { NoWords } from '../no-words/no-words'
 import { Skeleton } from '../ui/skeleton'
+import { useQueryParams } from '@/helpers/update-query-params'
 
 export function Word({ letter }: { letter?: string }) {
   const nextRef = useRef<HTMLButtonElement>(null)
   const prevRef = useRef<HTMLButtonElement>(null)
 
+  const q = useQueryParams()
+
   const { learnMode, shuffle } = useTypedSelector(data => data.settings)
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  const { data = { items: [], total: 0, limit: 0, page: 1 }, isLoading, isFetching } = useGetWordsQuery({ letter, shuffle, page: currentPage })
+  const { data = { items: [], total: 0, limit: 0, page: 1 }, isLoading, isFetching } = useGetWordsQuery({ letter, shuffle, page: currentPage }, { skip: q.get('isEmpty') === 'true' })
 
   const { nextWord, prevWord, reset, currentWord, commonIdx } = useWordStepByStep(
     data.items,

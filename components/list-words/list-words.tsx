@@ -9,9 +9,12 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { Pagination } from '../pagination/pagination'
 import { useIsMobile } from '@/hooks/use-is-mobile'
+import { useQueryParams } from '@/helpers/update-query-params'
 
 export function ListWords({ letter }: { letter?: string }) {
   const isMobile = useIsMobile(1024)
+
+  const q = useQueryParams()
 
   const { learnMode, shuffle } = useTypedSelector(data => data.settings)
 
@@ -19,7 +22,7 @@ export function ListWords({ letter }: { letter?: string }) {
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  const { data = { items: [], total: 0, limit: 0, page: 1 }, isLoading, isFetching } = useGetWordsQuery({ letter, shuffle, page: currentPage })
+  const { data = { items: [], total: 0, limit: 0, page: 1 }, isLoading, isFetching } = useGetWordsQuery({ letter, shuffle, page: currentPage }, { skip: q.get('isEmpty') === 'true' })
 
   const totalPages = Math.ceil(data.total / data.limit)
 

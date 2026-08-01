@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://slam-english-api.duckdns.org/',
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
 })
 
 export const api = createApi({
