@@ -46,7 +46,7 @@ export default async function Home() {
         <Separator />
         <div className='w-full grid grid-cols-3 mb-6 sm:grid-cols-4 md:grid-cols-6 gap-4 sm:gap-8'>
           {data.map(({ letter, count }) => (
-            <Link key={letter} href={`/letter/${letter}?isEmpty=${count === 0}`}>
+            <Link key={letter} href={`/letter/${letter}?isEmpty=${count === 0}`} prefetch={count !== 0}>
               <div className="relative hover:border-l-0 hover:border-b-0 hover:border-t-2 hover:border-r border-l border-b-2 bg-background flex justify-center px-4 py-6 rounded-md">
                 <div className="text-3xl sm:text-4xl font-bold uppercase text-foreground">{letter}</div>
                 <Badge className={
